@@ -1,0 +1,78 @@
+﻿@model FileWatcherApp.Models.Dashboard.DashboardListViewModel
+
+<h2>Dashboard</h2>
+
+<form method="get" asp-action="Index">
+    <div class="input-group mb-3">
+        <input type="text" name="searchString" value="@Model.SearchString" class="form-control" placeholder="Search..." />
+        <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+</form>
+
+<div class="accordion" id="boxAccordion">
+    @foreach (var box in Model.Boxes)
+    {
+        var boxId = $"box{box.BoxId}";
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading@(boxId)">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(boxId)" aria-controls="collapse@(boxId)">
+                    @box.BoxName &nbsp; @if (box.Jobs?.Count() > 0)
+                    {
+                        <span class="badge @(box.OverallStatusClass)">@box.OverallStatusText</span>
+                    }
+                     &nbsp;<span class="badge bg-info">Schedule : @box.ScheduleTime.ToString("HH:mm")</span>
+                </button>
+            </h2>
+            <div id="collapse@(boxId)" class="accordion-collapse collapse" aria-labelledby="heading@(boxId)" data-bs-parent="#boxAccordion">
+                <div class="accordion-body">
+                    <ul class="list-group">
+                        @if (box.Jobs != null && box.Jobs.Any())
+                        {
+                            @foreach (var job in box.Jobs)
+                            {
+                                <li class="list-group-item">
+                                    <strong>Job Name:</strong> @job.JobName <br />
+                                    <strong>File Path:</strong> @job.FilePath <br />
+                                    <strong>Expected Arrival Time:</strong> @job.ExpectedArrivalTime <br />
+                                    <strong>Status:</strong> <span class="badge @(job.StatusClass)">@job.StatusText</span>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item">No jobs available.</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Pagination Controls -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @if (Model.CurrentPage > 1)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)" asp-route-searchString="@Model.SearchString">Previous</a>
+            </li>
+        }
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-searchString="@Model.SearchString">@i</a>
+            </li>
+        }
+        @if (Model.CurrentPage < Model.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)" asp-route-searchString="@Model.SearchString">Next</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

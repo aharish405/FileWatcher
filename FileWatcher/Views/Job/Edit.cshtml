@@ -1,0 +1,63 @@
+﻿@model FileWatcherApp.Models.Job.JobViewModel
+
+<h2>Edit Job</h2>
+
+<form asp-action="Edit" method="post">
+    <!-- Hidden field for JobId -->
+    <input type="hidden" asp-for="JobId" />
+
+    <div class="form-group">
+        <label asp-for="JobName" class="control-label"></label>
+        <input asp-for="JobName" class="form-control" />
+        <span asp-validation-for="JobName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FilePath" class="control-label"></label>
+        <input asp-for="FilePath" class="form-control" />
+        <span asp-validation-for="FilePath" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ExpectedArrivalTime" class="control-label"></label>
+        <input asp-for="ExpectedArrivalTime" type="time" class="form-control" />
+        <span asp-validation-for="ExpectedArrivalTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CheckIntervalMinutes" class="control-label"></label>
+        <input asp-for="CheckIntervalMinutes" class="form-control" />
+        <span asp-validation-for="CheckIntervalMinutes" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="BoxId" class="control-label"></label>
+        <select asp-for="BoxId" class="form-control" asp-items="Model.BoxList">
+            <option value="">Select Box</option>
+        </select>
+        <span asp-validation-for="BoxId" class="text-danger"></span>
+    </div>
+
+    <!-- New fields for CalendarId, TimeZone, and IgnoreBoxSchedule -->
+    <div class="form-group">
+        <label asp-for="CalendarId" class="control-label"></label>
+        <select asp-for="CalendarId" class="form-control" asp-items="Model.CalendarList">
+            <option value="">Select Calendar</option>
+        </select>
+        <span asp-validation-for="CalendarId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="IgnoreBoxSchedule" class="form-check-input" type="checkbox" />
+        <label asp-for="IgnoreBoxSchedule" class="form-check-label"></label>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

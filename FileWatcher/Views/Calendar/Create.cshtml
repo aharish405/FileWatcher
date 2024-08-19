@@ -1,0 +1,74 @@
+﻿@model FileWatcherApp.Models.Calendar.CalendarViewModel
+
+<h2>Create Calendar</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ScheduleType" class="control-label"></label>
+        <select asp-for="ScheduleType" class="form-control" asp-items="Model.ScheduleTypes">
+            <option value="">Select Schedule Type</option>
+        </select>
+        <span asp-validation-for="ScheduleType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" id="custom-days" style="display:none;">
+        <label for="CalendarDays">Custom Days</label>
+        <select id="CalendarDays" name="CalendarDays" class="form-control" multiple>
+            @foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+            {
+                <option value="@day">@day</option>
+            }
+        </select>
+    </div>
+
+    <input type="hidden" asp-for="Days" id="Days" />
+
+    <div class="form-group">
+        <label asp-for="Timezone" class="control-label"></label>
+        <input asp-for="Timezone" class="form-control" />
+        <span asp-validation-for="Timezone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        document.getElementById('ScheduleType').addEventListener('change', function () {
+            var display = this.value === 'Custom' ? 'block' : 'none';
+            document.getElementById('custom-days').style.display = display;
+        });
+        document.getElementById("CalendarDays").addEventListener("change", function () {
+            var selectedOptions = Array.from(this.selectedOptions).map(option => option.value);
+            document.getElementById("Days").value = selectedOptions.join(",");
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            var scheduleTypeSelect = document.getElementById('ScheduleType');
+            var customDaysDiv = document.getElementById('custom-days');
+
+            scheduleTypeSelect.addEventListener('change', function () {
+                if (this.value === 'Custom') {
+                    customDaysDiv.style.display = 'block';
+                } else {
+                    customDaysDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

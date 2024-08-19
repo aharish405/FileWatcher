@@ -1,0 +1,36 @@
+﻿@model FileWatcherApp.Models.Box.BoxEditViewModel
+
+<h2>Edit Box</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="BoxId" />
+
+    <div class="form-group">
+        <label asp-for="BoxName" class="control-label"></label>
+        <input asp-for="BoxName" class="form-control" />
+        <span asp-validation-for="BoxName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ScheduleTime" class="control-label"></label>
+        <input asp-for="ScheduleTime" type="time" class="form-control" />
+        <span asp-validation-for="ScheduleTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CalendarId" class="control-label"></label>
+        <select asp-for="CalendarId" class="form-control" asp-items="Model.CalendarList">
+            <option value="">None</option>
+        </select>
+        <span asp-validation-for="CalendarId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
