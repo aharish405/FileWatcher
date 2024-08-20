@@ -84,6 +84,7 @@ namespace FileWatcherApp.Controllers
                     FilePath = model.FilePath,
                     ExpectedArrivalTime = model.ExpectedArrivalTime,
                     CheckIntervalMinutes = model.CheckIntervalMinutes,
+                    SourceTeamContact = model.SourceTeamContact,
                     BoxId = model.BoxId,
                     CalendarId = model.CalendarId, // New property
                     //TimeZone = model.TimeZone,     // New property
@@ -124,6 +125,7 @@ namespace FileWatcherApp.Controllers
                                   FilePath = j.FilePath,
                                   ExpectedArrivalTime = j.ExpectedArrivalTime,
                                   CheckIntervalMinutes = j.CheckIntervalMinutes,
+                                  SourceTeamContact = j.SourceTeamContact,
                                   BoxId = j.BoxId,
                                   CalendarId = j.CalendarId, // New property
                                   //TimeZone = j.TimeZone,     // New property
@@ -170,6 +172,7 @@ namespace FileWatcherApp.Controllers
                 job.FilePath = model.FilePath;
                 job.ExpectedArrivalTime = model.ExpectedArrivalTime;
                 job.CheckIntervalMinutes = model.CheckIntervalMinutes;
+                job.SourceTeamContact = model.SourceTeamContact;
                 job.BoxId = model.BoxId;
                 job.CalendarId = model.CalendarId;
                 //job.TimeZone = model.TimeZone;
