@@ -20,6 +20,11 @@
         <input asp-for="ExpectedArrivalTime" type="time" class="form-control" />
         <span asp-validation-for="ExpectedArrivalTime" class="text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="SourceTeamContact" class="control-label">SourceTeamContact use ; for multiple email IDs</label>
+        <input asp-for="SourceTeamContact"  class="form-control" />
+        <span asp-validation-for="SourceTeamContact" class="text-danger"></span>
+    </div>
 
     <div class="form-group">
         <label asp-for="CheckIntervalMinutes" class="control-label"></label>

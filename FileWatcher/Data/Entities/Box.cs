@@ -12,5 +12,8 @@ namespace FileWatcherApp.Data.Entities
         public Calendar Calendar { get; set; }
         public DateTime ScheduleTime { get; set; }
         public ICollection<Job> Jobs { get; set; }
+
+        public int? ExcludeCalendarId { get; set; }
+        public ExcludeCalendar ExcludeCalendar { get; set; }
     }
 }

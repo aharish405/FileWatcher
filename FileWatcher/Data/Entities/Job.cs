@@ -7,6 +7,7 @@ namespace FileWatcherApp.Data.Entities
         public int JobId { get; set; }
         public string JobName { get; set; }
         public string FilePath { get; set; }
+        public string SourceTeamContact { get; set; }
         public DateTime ExpectedArrivalTime { get; set; }
         public int CheckIntervalMinutes { get; set; }
         public int BoxId { get; set; } // Foreign Key

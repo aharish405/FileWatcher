@@ -1,0 +1,41 @@
+﻿@model FileWatcherApp.Models.ExcludeCalendar.ExcludeCalendarEditViewModel
+
+<h2>Edit Exclude Calendar</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="ExcludeCalendarId" />
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedDates" class="control-label">Select Dates</label>
+        <input id="selectedDates" name="SelectedDates" class="form-control" value="@Model.SelectedDates" />
+        <span asp-validation-for="SelectedDates" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var selectedDates = "@Model.SelectedDates".split(',').map(function (date) {
+                return new Date(date.trim());
+            });
+
+            $('#selectedDates').datepicker({
+                multidate: true,
+                format: 'yyyy-mm-dd',
+                todayHighlight: true
+            }).datepicker('setDates', selectedDates).on('changeDate', function (e) {
+                var dates = $(this).datepicker('getDates');
+                $(this).val(dates.map(date => date.toISOString().slice(0, 10)).join(', '));
+            });
+        });
+    </script>
+}

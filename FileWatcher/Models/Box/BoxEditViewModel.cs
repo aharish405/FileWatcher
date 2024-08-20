@@ -15,6 +15,8 @@ namespace FileWatcherApp.Models.Box
 
         public int? CalendarId { get; set; }
         public IEnumerable<SelectListItem> CalendarList { get; set; }
+        public int? ExcludeCalendarId { get; set; }
+        public IEnumerable<SelectListItem> ExcludeCalendarList { get; set; }
     }
 
 }

@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FileWatcher</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/jquery/dist/jquery-ui.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <style>
         /* Wells Fargo Theme Colors for Navbar */
         .navbar {
-            background-color: #e4002b !important; /* Wells Fargo Red */
-            border-bottom: 2px solid #f5a300 !important; /* Wells Fargo Gold */
+            background-color: #D41C2C !important; /* Wells Fargo Red */
+            border-bottom: 3px solid #FCCC44 !important; /* Wells Fargo Gold */
         }
 
         .navbar-nav .nav-link {
@@ -19,7 +20,7 @@
         }
 
             .navbar-nav .nav-link:hover {
-                color: #f5a300 !important; /* Wells Fargo Gold */
+                color: #FCCC44 !important; /* Wells Fargo Gold */
             }
 
         .navbar-logo {
@@ -34,10 +35,11 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-fixed-top navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <!-- Wells Fargo Text Logo -->
                 <a class="navbar-brand" asp-area="" asp-controller="Dashboard" asp-action="Index">
+                    <img height="22" src="data:image/webp;base64,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" />
                     <span>FileWatcher</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -80,6 +82,8 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery-ui.js"></script>
+    <script src="~/lib/jquery/dist/jquery-ui.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

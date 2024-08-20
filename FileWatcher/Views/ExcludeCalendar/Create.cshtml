@@ -1,0 +1,70 @@
+﻿@model FileWatcherApp.Models.ExcludeCalendar.ExcludeCalendarCreateViewModel
+
+<h2>Create Exclude Calendar</h2>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedDates" class="control-label">Select Dates</label>
+        <input id="selectedDates" name="SelectedDates" class="form-control" readonly />
+        <span asp-validation-for="SelectedDates" class="text-danger"></span>
+        <button type="button" id="openDatePicker" class="btn btn-primary mt-2">Select Dates</button>
+    </div>
+
+    <!-- Hidden date picker container -->
+    <div id="datePickerContainer" style="display: none;">
+        <label for="calendar">Calendar:</label>
+        <input type="text" id="calendar" class="form-control" />
+        <button type="button" id="addDate" class="btn btn-success mt-2">Add Date</button>
+    </div>
+
+    <!-- Display selected dates -->
+    <div id="selectedDatesDisplay" class="mt-2"></div>
+
+    <button type="submit" class="btn btn-primary mt-3">Create</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Cancel</a>
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let selectedDates = [];
+
+            function updateSelectedDatesDisplay() {
+                $('#selectedDates').val(selectedDates.join(', '));
+                $('#selectedDatesDisplay').text('Selected Dates: ' + selectedDates.join(', '));
+            }
+
+            // Initialize datepicker
+            $('#calendar').datepicker({
+                dateFormat: 'yy-mm-dd',
+                onSelect: function (dateText) {
+                    if (dateText && !selectedDates.includes(dateText)) {
+                        selectedDates.push(dateText);
+                        updateSelectedDatesDisplay();
+                    }
+                    $(this).val(''); // Clear the datepicker input field
+                }
+            });
+
+            // Show the date picker container
+            $('#openDatePicker').click(function () {
+                $('#datePickerContainer').toggle();
+            });
+
+            // Optional: Add an event to hide the date picker container when clicking outside
+            $(document).click(function (event) {
+                if (!$(event.target).closest('#datePickerContainer, #openDatePicker').length) {
+                    $('#datePickerContainer').hide();
+                }
+            });
+        });
+    </script>
+    }

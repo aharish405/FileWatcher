@@ -12,5 +12,6 @@ namespace FileWatcherApp.Data
         public DbSet<JobStatus> JobStatuses { get; set; }
         public DbSet<Calendar> Calendars { get; set; }
         public DbSet<CalendarDay> CalendarDays { get; set; }
+        public DbSet<ExcludeCalendar> ExcludeCalendars { get; set; }
     }
 }

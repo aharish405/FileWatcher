@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/FileWatcher/Database/FileWatcher.mdf
+/FileWatcher/Database/FileWatcher_log.ldf
+/FileWatcher/Database/FileWatcher.mdf
+/FileWatcher/Database/FileWatcher_log.ldf

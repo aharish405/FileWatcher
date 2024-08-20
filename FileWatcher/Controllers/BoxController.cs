@@ -68,7 +68,13 @@ namespace FileWatcherApp.Controllers
                         Value = c.Id.ToString(),
                         Text = c.Name
                     })
-                    .ToList()
+                    .ToList(),
+                ExcludeCalendarList=_context.ExcludeCalendars
+                .Select(x=> new SelectListItem
+                {
+                    Value=x.ExcludeCalendarId.ToString(),
+                    Text=x.Name
+                }).ToList(),
             };
 
             return View(viewModel);
@@ -83,7 +89,8 @@ namespace FileWatcherApp.Controllers
                 {
                     BoxName = model.BoxName,
                     ScheduleTime = model.ScheduleTime,
-                    CalendarId = model.CalendarId
+                    CalendarId = model.CalendarId,
+                    ExcludeCalendarId=model.ExcludeCalendarId
                 };
 
                 _context.Boxes.Add(box);
@@ -98,6 +105,12 @@ namespace FileWatcherApp.Controllers
                     Text = c.Name
                 })
                 .ToList();
+            model.ExcludeCalendarList = _context.ExcludeCalendars
+               .Select(x => new SelectListItem
+               {
+                   Value = x.ExcludeCalendarId.ToString(),
+                   Text = x.Name
+               }).ToList();
 
             return View(model);
         }

@@ -37,12 +37,17 @@ namespace FileWatcherApp.Migrations
                     b.Property<int?>("CalendarId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ExcludeCalendarId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ScheduleTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("BoxId");
 
                     b.HasIndex("CalendarId");
+
+                    b.HasIndex("ExcludeCalendarId");
 
                     b.ToTable("Boxes");
                 });
@@ -96,6 +101,27 @@ namespace FileWatcherApp.Migrations
                     b.ToTable("CalendarDays");
                 });
 
+            modelBuilder.Entity("FileWatcherApp.Data.Entities.ExcludeCalendar", b =>
+                {
+                    b.Property<int>("ExcludeCalendarId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExcludeCalendarId"));
+
+                    b.Property<string>("ExcludedDates")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ExcludeCalendarId");
+
+                    b.ToTable("ExcludeCalendars");
+                });
+
             modelBuilder.Entity("FileWatcherApp.Data.Entities.Job", b =>
                 {
                     b.Property<int>("JobId")
@@ -124,6 +150,10 @@ namespace FileWatcherApp.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("JobName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SourceTeamContact")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -170,7 +200,13 @@ namespace FileWatcherApp.Migrations
                         .WithMany()
                         .HasForeignKey("CalendarId");
 
+                    b.HasOne("FileWatcherApp.Data.Entities.ExcludeCalendar", "ExcludeCalendar")
+                        .WithMany("Box")
+                        .HasForeignKey("ExcludeCalendarId");
+
                     b.Navigation("Calendar");
+
+                    b.Navigation("ExcludeCalendar");
                 });
 
             modelBuilder.Entity("FileWatcherApp.Data.Entities.CalendarDay", b =>
@@ -220,6 +256,11 @@ namespace FileWatcherApp.Migrations
             modelBuilder.Entity("FileWatcherApp.Data.Entities.Calendar", b =>
                 {
                     b.Navigation("CalendarDays");
+                });
+
+            modelBuilder.Entity("FileWatcherApp.Data.Entities.ExcludeCalendar", b =>
+                {
+                    b.Navigation("Box");
                 });
 
             modelBuilder.Entity("FileWatcherApp.Data.Entities.Job", b =>

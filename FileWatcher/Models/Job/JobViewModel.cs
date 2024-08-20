@@ -23,6 +23,7 @@ namespace FileWatcherApp.Models.Job
 
         [Required(ErrorMessage = "Box is required")]
         public int BoxId { get; set; }
+        public string SourceTeamContact { get; set; }
         public string BoxName { get; set; }
 
         public IEnumerable<SelectListItem> BoxList { get; set; }
