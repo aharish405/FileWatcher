@@ -13,7 +13,7 @@
     </div>
 </form>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped table-sm">
     <thead class="table-success">
         <tr>
             <th>ID</th>
@@ -63,8 +63,8 @@
                     }
                 </td>
                 <td>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@box.BoxId">Edit</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@box.BoxId">Delete</a>
+                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@box.BoxId">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@box.BoxId">Delete</a>
                 </td>
             </tr>
         }

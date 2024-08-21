@@ -12,7 +12,7 @@
     </div>
 </form>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped table-sm">
     <thead class="table-success">
         <tr>
             <th>ID</th>
@@ -31,8 +31,8 @@
                 <td>@excludeCalendar.ExcludedDates</td>
                 <td>@excludeCalendar.BoxCount</td>
                 <td>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@excludeCalendar.ExcludeCalendarId">Edit</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@excludeCalendar.ExcludeCalendarId">Delete</a>
+                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@excludeCalendar.ExcludeCalendarId">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@excludeCalendar.ExcludeCalendarId">Delete</a>
                 </td>
             </tr>
         }
