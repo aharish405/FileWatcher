@@ -94,7 +94,8 @@ public class FileCheckerService : BackgroundService
                         }
 
                         // Check if the current time is within the check window
-                        if (currentTime >= startTime && currentTime <= endTime)
+                        //if (currentTime >= startTime && currentTime <= endTime)
+                        if (true)
                         {
                             // Resolve the file path with dynamic date placeholders
                             string filePath = job.FilePath;

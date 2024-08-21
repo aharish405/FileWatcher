@@ -9,46 +9,90 @@
     </div>
 </form>
 
-<div class="accordion" id="boxAccordion">
-    @foreach (var box in Model.Boxes)
-    {
-        var boxId = $"box{box.BoxId}";
-
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="heading@(boxId)">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(boxId)" aria-controls="collapse@(boxId)">
-                    @box.BoxName &nbsp; @if (box.Jobs?.Count() > 0)
-                    {
-                        <span class="badge @(box.OverallStatusClass)">@box.OverallStatusText</span>
-                    }
-                     &nbsp;<span class="badge bg-info">Schedule : @box.ScheduleTime.ToString("HH:mm")</span>
-                </button>
-            </h2>
-            <div id="collapse@(boxId)" class="accordion-collapse collapse" aria-labelledby="heading@(boxId)" data-bs-parent="#boxAccordion">
-                <div class="accordion-body">
-                    <ul class="list-group">
-                        @if (box.Jobs != null && box.Jobs.Any())
-                        {
-                            @foreach (var job in box.Jobs)
-                            {
-                                <li class="list-group-item">
-                                    <strong>Job Name:</strong> @job.JobName <br />
-                                    <strong>File Path:</strong> @job.FilePath <br />
-                                    <strong>Expected Arrival Time:</strong> @job.ExpectedArrivalTime <br />
-                                    <strong>Status:</strong> <span class="badge @(job.StatusClass)">@job.StatusText</span>
-                                </li>
-                            }
-                        }
-                        else
-                        {
-                            <li class="list-group-item">No jobs available.</li>
-                        }
-                    </ul>
+<div class="container">
+    <!-- Summary Cards -->
+    <div class="row my-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Boxes</h5>
+                    <p class="card-text display-4">@Model.Boxes.Count()</p>
                 </div>
             </div>
         </div>
-    }
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Jobs</h5>
+                    <p class="card-text display-4">@Model.Boxes.Sum(b => b.Jobs.Count())</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Available Files</h5>
+                    <p class="card-text display-4">@Model.Boxes.Sum(b => b.Jobs.Count(j => j.StatusText == "Available"))</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Not Available Files</h5>
+                    <p class="card-text display-4">@Model.Boxes.Sum(b => b.Jobs.Count(j => j.StatusText == "Not Available"))</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accordion -->
+    <div class="accordion" id="boxAccordion">
+        @foreach (var box in Model.Boxes)
+        {
+            var boxId = $"box{box.BoxId}";
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading@(boxId)">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(boxId)" aria-controls="collapse@(boxId)">
+                        <strong>@box.BoxName</strong>
+                        &nbsp;
+                        @if (box.Jobs?.Count() > 0)
+                        {
+                            <span class="badge @(box.OverallStatusClass)">@box.OverallStatusText</span>
+                        }
+                        &nbsp;
+                        <span class="badge bg-info">Schedule: @box.ScheduleTime.ToString("HH:mm")</span>
+                    </button>
+                </h2>
+                <div id="collapse@(boxId)" class="accordion-collapse collapse @(Model.Boxes.First() == box ? "show" : "")" aria-labelledby="heading@(boxId)" data-bs-parent="#boxAccordion">
+                    <div class="accordion-body">
+                        <ul class="list-group">
+                            @if (box.Jobs != null && box.Jobs.Any())
+                            {
+                                @foreach (var job in box.Jobs)
+                                {
+                                    <li class="list-group-item">
+                                        <strong>Job Name:</strong> @job.JobName <br />
+                                        <strong>File Path:</strong> @job.FilePath <br />
+                                        <strong>Expected Arrival Time:</strong> @job.ExpectedArrivalTime <br />
+                                        <strong>Status:</strong> <span class="badge @(job.StatusClass)">@job.StatusText</span>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="list-group-item">No jobs available.</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
+
+
 
 <!-- Pagination Controls -->
 <nav aria-label="Page navigation">
