@@ -1,0 +1,59 @@
+﻿@model FileWatcherApp.Models.Box.BoxDetailsViewModel
+
+<div class="card mb-3">
+    <div class="card-header">
+        Box Information
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Box ID</dt>
+            <dd class="col-sm-9">@Model.BoxId</dd>
+
+            <dt class="col-sm-3">Box Name</dt>
+            <dd class="col-sm-9">@Model.BoxName</dd>
+
+            <dt class="col-sm-3">Schedule Time</dt>
+            <dd class="col-sm-9">@Model.ScheduleTime.ToString("HH:mm")</dd>
+
+            <dt class="col-sm-3">Calendar Name</dt>
+            <dd class="col-sm-9">@Model.CalendarName</dd>
+
+            <dt class="col-sm-3">Timezone</dt>
+            <dd class="col-sm-9">@Model.Timezone</dd>
+
+            <dt class="col-sm-3">Exclude Calendar</dt>
+            <dd class="col-sm-9">@Model.ExcludeCalendarName</dd>
+
+            <dt class="col-sm-3">Active Status</dt>
+            <dd class="col-sm-9">@(Model.IsActive ? "Active" : "Inactive")</dd>
+
+            <dt class="col-sm-3">Notify Source Team Automatically</dt>
+            <dd class="col-sm-9">@(Model.NotifySourceTeamAutomatically ? "Yes" : "No")</dd>
+
+            <dt class="col-sm-3">Jobs</dt>
+            <dd class="col-sm-9">
+                @if (Model.Jobs.Any())
+                {
+                    <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#jobsCollapse" aria-expanded="false" aria-controls="jobsCollapse">
+                        View Jobs
+                    </button>
+                    <div class="collapse" id="jobsCollapse">
+                        <ol>
+                            @foreach (var job in Model.Jobs)
+                            {
+                                <li>@job</li>
+                            }
+                        </ol>
+                    </div>
+                }
+                else
+                {
+                    <span>No jobs associated</span>
+                }
+            </dd>
+        </dl>
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </div>
+</div>
+
+

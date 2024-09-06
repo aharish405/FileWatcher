@@ -19,7 +19,7 @@ namespace FileWatcherApp.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int page = 1, string searchString = "")
+        public async Task<IActionResult> _Index(int page = 1, string searchString = "")
         {
             var boxesQuery = _context.Boxes
                 .Include(b => b.Calendar)
@@ -58,7 +58,60 @@ namespace FileWatcherApp.Controllers
             return View(viewModel);
         }
 
+        public IActionResult Index()
+        {
+            return View();
+        }
 
+        public PartialViewResult Grid()
+        {
+            var boxesQuery = _context.Boxes
+                .Include(b => b.Calendar)
+                .ThenInclude(c => c.CalendarDays)
+                .AsQueryable();
+
+            var boxes = boxesQuery.Select(b => new BoxIndexViewModel
+            {
+                BoxId = b.BoxId,
+                BoxName = b.BoxName,
+                ScheduleTime = b.ScheduleTime,
+                CalendarName = b.Calendar != null ? b.Calendar.Name : "None",
+                Timezone = b.Calendar != null ? b.Calendar.Timezone : "None",
+                ScheduleType = b.Calendar != null ? b.Calendar.ScheduleType : new ScheduleType(),
+                IsActive = b.IsActive,
+            }).ToList();
+
+            return PartialView("_Grid", boxes);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var box = _context.Boxes
+                .Include(b => b.Calendar)
+                .Include(b => b.ExcludeCalendar)
+                .Include(b => b.Jobs)
+                .FirstOrDefault(b => b.BoxId == id);
+
+            if (box == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new BoxDetailsViewModel
+            {
+                BoxId = box.BoxId,
+                BoxName = box.BoxName,
+                ScheduleTime = box.ScheduleTime,
+                CalendarName = box.Calendar?.Name ?? "None",
+                Timezone = box.Calendar?.Timezone ?? "None",
+                IsActive = box.IsActive,
+                NotifySourceTeamAutomatically = box.NotifySourceTeamAutomatically,
+                ExcludeCalendarName = box.ExcludeCalendar?.Name ?? "None",
+                Jobs = box.Jobs?.Select(j => j.JobName).ToList() ?? new List<string>()
+            };
+
+            return View(viewModel);
+        }
         public IActionResult Create()
         {
             var viewModel = new BoxCreateViewModel
@@ -130,7 +183,8 @@ namespace FileWatcherApp.Controllers
                                         ScheduleTime = b.ScheduleTime,
                                         CalendarId = b.CalendarId,
                                         ExcludeCalendarId=b.ExcludeCalendarId, 
-                                        IsActive=b.IsActive
+                                        IsActive=b.IsActive,
+                                        NotifySourceTeamAutomatically=b.NotifySourceTeamAutomatically
                                     })
                                     .FirstOrDefaultAsync();
 
@@ -174,6 +228,7 @@ namespace FileWatcherApp.Controllers
                 box.CalendarId = model.CalendarId;
                 box.IsActive = model.IsActive;
                 box.ExcludeCalendarId = model.ExcludeCalendarId;
+                box.NotifySourceTeamAutomatically = model.NotifySourceTeamAutomatically;
 
                 _context.Boxes.Update(box);
                 await _context.SaveChangesAsync();

@@ -1,45 +1,59 @@
 ﻿@model FileWatcherApp.Models.Box.BoxEditViewModel
 
-<h2>Edit Box</h2>
+<div class="card mb-3">
+    <div class="card-header">
+        Edit Box
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="BoxId" />
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="BoxId" />
+            <div class="form-group">
+                <label asp-for="BoxName" class="control-label"></label>
+                <input asp-for="BoxName" class="form-control" />
+                <span asp-validation-for="BoxName" class="text-danger"></span>
+            </div>
 
-    <div class="form-group">
-        <label asp-for="BoxName" class="control-label"></label>
-        <input asp-for="BoxName" class="form-control" />
-        <span asp-validation-for="BoxName" class="text-danger"></span>
-    </div>
+            <div class="form-group">
+                <label asp-for="ScheduleTime" class="control-label"></label>
+                <input asp-for="ScheduleTime" type="time" class="form-control" />
+                <span asp-validation-for="ScheduleTime" class="text-danger"></span>
+            </div>
 
-    <div class="form-group">
-        <label asp-for="ScheduleTime" class="control-label"></label>
-        <input asp-for="ScheduleTime" type="time" class="form-control" />
-        <span asp-validation-for="ScheduleTime" class="text-danger"></span>
-    </div>
+            <div class="form-group">
+                <label asp-for="CalendarId" class="control-label"></label>
+                <select asp-for="CalendarId" class="form-control" asp-items="Model.CalendarList">
+                    <option value="">None</option>
+                </select>
+                <span asp-validation-for="CalendarId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExcludeCalendarId" class="control-label"></label>
+                <select asp-for="ExcludeCalendarId" class="form-control" asp-items="Model.ExcludeCalendarList">
+                    <option value="">Select Calendar</option>
+                </select>
+                <span asp-validation-for="ExcludeCalendarId" class="text-danger"></span>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-check form-switch me-3">
+                    <input class="form-check-input" asp-for="IsActive" type="checkbox">
+                    <label class="form-check-label" for="IsActive">Active</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" asp-for="NotifySourceTeamAutomatically" type="checkbox">
+                    <label class="form-check-label" for="NotifySourceTeamAutomatically">Notify Source Team Automatically</label>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="CalendarId" class="control-label"></label>
-        <select asp-for="CalendarId" class="form-control" asp-items="Model.CalendarList">
-            <option value="">None</option>
-        </select>
-        <span asp-validation-for="CalendarId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ExcludeCalendarId" class="control-label"></label>
-        <select asp-for="ExcludeCalendarId" class="form-control" asp-items="Model.ExcludeCalendarList">
-            <option value="">Select Calendar</option>
-        </select>
-        <span asp-validation-for="ExcludeCalendarId" class="text-danger"></span>
-    </div>
-    <div class="form-check form-switch">
-        <input class="form-check-input" asp-for="IsActive" type="checkbox">
-        <label class="form-check-label" for="IsActive">Active</label>
-    </div>
+            </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Save</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+
+
 
 @section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>

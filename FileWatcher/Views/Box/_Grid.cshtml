@@ -1,0 +1,21 @@
+﻿@using FileWatcherApp.Models.Box
+@using NonFactors.Mvc.Grid
+@model IEnumerable<BoxIndexViewModel>
+
+@Html.Grid(Model).Build(columns =>
+        {
+            columns.Add(model => model.BoxId).Titled("ID").Sortable(true);
+            columns.Add(model => model.BoxName).Titled("Box Name").Sortable(true);
+            columns.Add(model => model.ScheduleTime.ToString("HH:mm")).Titled("Schedule").Sortable(true);
+            columns.Add(model => !string.IsNullOrEmpty(model.ScheduleType.ToString()) ? model.ScheduleType.ToString() : "None")
+                .Titled("Calendar Days").Sortable(true);
+            columns.Add(model => !string.IsNullOrEmpty(model.Timezone) ? model.Timezone : "None").Titled("Timezone").Sortable(true);
+            columns.Add(model => !string.IsNullOrEmpty(model.CalendarName) ? model.CalendarName : "None").Titled("Calendar").Sortable(true);
+            columns.Add(model => model.IsActive ? "Active" : "Inactive").Titled("Status").Sortable(true);
+            columns.Add()
+                .Titled("Actions")
+                .RenderedAs(model =>
+                        Html.Raw($"<div class='input-group'><a class='btn btn-primary btn-sm' href='/Box/Details/{model.BoxId}'>View</a> " +
+                                 $"<a class='btn btn-warning btn-sm' href='/Box/Edit/{model.BoxId}'>Edit</a> " +
+                             $"<a class='btn btn-danger btn-sm' href='/Box/Delete/{model.BoxId}'>Delete</a></div>"));
+        }).Empty("No records found.").Pageable(pager =>{ pager.RowsPerPage = 10;}).Filterable().Sortable()

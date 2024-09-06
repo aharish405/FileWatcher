@@ -86,5 +86,14 @@
     <script src="~/lib/jquery/dist/jquery-ui.min.js"></script> *@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    @*MVC GRID*@
+    <link href="~/css/mvc-grid/mvc-grid.css" rel="stylesheet" />
+    <script src="~/js/mvc-grid/mvc-grid.js"></script>
+    <script>
+        [].forEach.call(document.getElementsByClassName('mvc-grid'), function (element) {
+            new MvcGrid(element);
+        });
+    </script>
 </body>
 </html>
