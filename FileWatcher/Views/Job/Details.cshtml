@@ -31,7 +31,16 @@
             <dd class="col-sm-9">@Model.Timezone</dd>
 
             <dt class="col-sm-3">Active Status</dt>
-            <dd class="col-sm-9">@(Model.IsActive ? "Active" : "Inactive")</dd>
+            <dd class="col-sm-9">
+                @if (Model.IsActive)
+                {
+                    <span class="badge bg-success">Active</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">Inactive</span>
+                }
+            </dd>
 
             <dt class="col-sm-3">Notify Source Team Automatically</dt>
             <dd class="col-sm-9">@(Model.NotifySourceTeamAutomatically ? "Yes" : "No")</dd>
