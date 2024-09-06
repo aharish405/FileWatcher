@@ -1,0 +1,25 @@
+﻿@using FileWatcherApp.Models.Job
+@using NonFactors.Mvc.Grid
+@model IEnumerable<JobIndexViewModel>
+
+@Html.Grid(Model).Build(columns =>
+        {
+            columns.Add(model => model.JobId).Titled("ID").Sortable(true);
+            columns.Add(model => model.JobName).Titled("Job Name").Sortable(true);
+            columns.Add(model => model.BoxName).Titled("Box Name").Sortable(true);
+            columns.Add(model => model.FilePath).Titled("File Path").Sortable(true);
+            columns.Add(model => model.ExpectedArrivalTime.ToString("HH:mm")).Titled("Expected Arrival").Sortable(true);
+            columns.Add(model => model.CheckIntervalMinutes).Titled("Check Before (min)").Sortable(true);
+            //columns.Add(model => model.CalendarName).Titled("Calendar").Sortable(true);
+            //columns.Add(model => model.Timezone).Titled("Timezone").Sortable(true);
+            columns.Add(model => model.IsActive ? "Active" : "Inactive").Titled("Status").Sortable(true);
+            columns.Add(model => model.NotifySourceTeamAutomatically ? "Yes" : "No").Titled("Notify Source Team").Sortable(true);
+            columns.Add()
+                .Titled("Actions")
+                .RenderedAs(model =>
+                    Html.Raw($"<div class='input-group'>" +
+                             $"<a class='btn btn-primary btn-sm' href='/Job/Details/{model.JobId}'>View</a> " +
+                             $"<a class='btn btn-warning btn-sm' href='/Job/Edit/{model.JobId}'>Edit</a> " +
+                             $"<a class='btn btn-danger btn-sm' href='/Job/Delete/{model.JobId}'>Delete</a>" +
+                             $"</div>"));
+            }).Empty("No records found.").Pageable(pager => { pager.RowsPerPage = 10; }).Filterable().Sortable()

@@ -1,0 +1,43 @@
+﻿@model FileWatcherApp.Models.Job.JobDetailsViewModel
+
+<div class="card">
+    <div class="card-header">
+        Job Details
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Job ID</dt>
+            <dd class="col-sm-9">@Model.JobId</dd>
+
+            <dt class="col-sm-3">Job Name</dt>
+            <dd class="col-sm-9">@Model.JobName</dd>
+
+            <dt class="col-sm-3">File Path</dt>
+            <dd class="col-sm-9">@Model.FilePath</dd>
+
+            <dt class="col-sm-3">Expected Arrival Time</dt>
+            <dd class="col-sm-9">@Model.ExpectedArrivalTime.ToString("HH:mm")</dd>
+
+            <dt class="col-sm-3">Check Interval (min)</dt>
+            <dd class="col-sm-9">@Model.CheckIntervalMinutes</dd>
+
+            <dt class="col-sm-3">Box Name</dt>
+            <dd class="col-sm-9">@Model.BoxName</dd>
+
+            <dt class="col-sm-3">Calendar Name</dt>
+            <dd class="col-sm-9">@Model.CalendarName</dd>
+
+            <dt class="col-sm-3">Timezone</dt>
+            <dd class="col-sm-9">@Model.Timezone</dd>
+
+            <dt class="col-sm-3">Active Status</dt>
+            <dd class="col-sm-9">@(Model.IsActive ? "Active" : "Inactive")</dd>
+
+            <dt class="col-sm-3">Notify Source Team Automatically</dt>
+            <dd class="col-sm-9">@(Model.NotifySourceTeamAutomatically ? "Yes" : "No")</dd>
+
+        </dl>
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-primary">Back to List</a>

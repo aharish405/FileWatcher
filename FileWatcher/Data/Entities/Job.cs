@@ -12,6 +12,7 @@ namespace FileWatcherApp.Data.Entities
         public bool IsActive { get; set; }
         public bool NotifySourceTeamAutomatically { get; set; }
         public string? SourceTeamContact { get; set; }
+        public string? AxwayID { get; set; }
         public DateTime ExpectedArrivalTime { get; set; }
         public int CheckIntervalMinutes { get; set; }
         public int BoxId { get; set; } // Foreign Key

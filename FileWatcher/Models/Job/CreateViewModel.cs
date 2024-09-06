@@ -22,6 +22,7 @@ namespace FileWatcherApp.Models.Job
         [Required(ErrorMessage = "Box is required")]
         public int BoxId { get; set; }
         public string? SourceTeamContact { get; set; }
+        public string? AxwayID { get; set; }
         public bool IsActive { get; set; }
         public bool NotifySourceTeamAutomatically { get; set; }
 

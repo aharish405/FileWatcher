@@ -1,5 +1,6 @@
 ﻿using FileWatcherApp.Data;
 using FileWatcherApp.Data.Entities;
+using FileWatcherApp.Models.Box;
 using FileWatcherApp.Models.Job;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,7 +16,7 @@ namespace FileWatcherApp.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int page = 1, string searchString = "")
+        public async Task<IActionResult> _Index(int page = 1, string searchString = "")
         {
             // Query to include related entities
             var jobsQuery = _context.Jobs
@@ -41,13 +42,70 @@ namespace FileWatcherApp.Controllers
             // Prepare view model
             var viewModel = new JobListViewModel
             {
-                Jobs = items,
-                CurrentPage = page,
-                TotalPages = (int)Math.Ceiling(count / (double)PageSize),
-                SearchString = searchString
+                Jobs = items
+                
             };
 
             // Return the view with the view model
+            return View(viewModel);
+        }
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public PartialViewResult Grid()
+        {
+            var jobsQuery = _context.Jobs
+                .Include(j => j.Box) 
+                .Include(j => j.Calendar)
+                .AsQueryable();
+
+            var jobs = jobsQuery.Select(j => new JobIndexViewModel
+            {
+                JobId = j.JobId,
+                JobName = j.JobName,
+                FilePath = j.FilePath,
+                ExpectedArrivalTime = j.ExpectedArrivalTime,
+                CheckIntervalMinutes = j.CheckIntervalMinutes,
+                BoxName = j.Box != null ? j.Box.BoxName : "None",
+                CalendarName = j.Calendar != null ? j.Calendar.Name : "None",
+                Timezone = j.Calendar != null ? j.Calendar.Timezone : "None",
+                IsActive = j.IsActive,
+                NotifySourceTeamAutomatically = j.NotifySourceTeamAutomatically
+            }).ToList();
+
+            return PartialView("_Grid", jobs);
+        }
+        public async Task<IActionResult> Details(int id)
+        {
+            // Fetch the job including related entities
+            var job = await _context.Jobs
+                .Include(j => j.Box)       // Include Box details
+                .Include(j => j.Calendar)  // Include Calendar details
+                .FirstOrDefaultAsync(j => j.JobId == id);
+
+            if (job == null)
+            {
+                return NotFound();
+            }
+
+            // Prepare the view model
+            var viewModel = new JobDetailsViewModel
+            {
+                JobId = job.JobId,
+                JobName = job.JobName,
+                FilePath = job.FilePath,
+                ExpectedArrivalTime = job.ExpectedArrivalTime,
+                CheckIntervalMinutes = job.CheckIntervalMinutes,
+                BoxName = job.Box != null ? job.Box.BoxName : "None",
+                CalendarName = job.Calendar != null ? job.Calendar.Name : "None",
+                Timezone = job.Calendar != null ? job.Calendar.Timezone : "None",
+                IsActive = job.IsActive,
+                NotifySourceTeamAutomatically = job.NotifySourceTeamAutomatically,
+                JobStatuses = job.JobStatuses // Assuming JobStatuses is a collection of related status records
+            };
+
             return View(viewModel);
         }
         public IActionResult Create()
@@ -88,7 +146,8 @@ namespace FileWatcherApp.Controllers
                     CalendarId = model.CalendarId,
                     IgnoreBoxSchedule = model.IgnoreBoxSchedule,
                     IsActive = model.IsActive,
-                    NotifySourceTeamAutomatically=model.NotifySourceTeamAutomatically
+                    NotifySourceTeamAutomatically=model.NotifySourceTeamAutomatically,
+                    AxwayID = model.AxwayID
                 };
 
                 _context.Jobs.Add(job);
@@ -118,7 +177,7 @@ namespace FileWatcherApp.Controllers
         {
             var job = _context.Jobs
                               .Where(j => j.JobId == id)
-                              .Select(j => new JobViewModel
+                              .Select(j => new EditViewModel
                               {
                                   JobId = j.JobId,
                                   JobName = j.JobName,
@@ -127,9 +186,11 @@ namespace FileWatcherApp.Controllers
                                   CheckIntervalMinutes = j.CheckIntervalMinutes,
                                   SourceTeamContact = j.SourceTeamContact,
                                   BoxId = j.BoxId,
-                                  CalendarId = j.CalendarId, // New property
-                                  //TimeZone = j.TimeZone,     // New property
-                                  IgnoreBoxSchedule = j.IgnoreBoxSchedule, // New property
+                                  CalendarId = j.CalendarId,                                  
+                                  IgnoreBoxSchedule = j.IgnoreBoxSchedule, 
+                                  IsActive = j.IsActive,
+                                  NotifySourceTeamAutomatically = j.NotifySourceTeamAutomatically,
+                                  AxwayID = j.AxwayID,
                                   BoxList = _context.Boxes
                                                     .Select(b => new SelectListItem
                                                     {
@@ -155,10 +216,9 @@ namespace FileWatcherApp.Controllers
             return View(job);
         }
         [HttpPost]
-        public IActionResult Edit(JobViewModel model)
+        public IActionResult Edit(EditViewModel model)
         {
-            // Validate model state with a threshold of less than 3 errors
-            if (ModelState.ErrorCount < 5)
+            if (ModelState.IsValid)
             {
                 var job = _context.Jobs.Find(model.JobId);
 
@@ -175,8 +235,10 @@ namespace FileWatcherApp.Controllers
                 job.SourceTeamContact = model.SourceTeamContact;
                 job.BoxId = model.BoxId;
                 job.CalendarId = model.CalendarId;
-                //job.TimeZone = model.TimeZone;
-                job.IgnoreBoxSchedule = model.IgnoreBoxSchedule; 
+                job.IgnoreBoxSchedule = model.IgnoreBoxSchedule;
+                job.IsActive = model.IsActive;
+                job.NotifySourceTeamAutomatically = model.NotifySourceTeamAutomatically;
+                job.AxwayID = model.AxwayID;
 
                 // Save changes to the database
                 _context.Jobs.Update(job);
@@ -206,39 +268,50 @@ namespace FileWatcherApp.Controllers
         }
         public IActionResult Delete(int id)
         {
+            // Fetch the job entity from the database
             var job = _context.Jobs
-                              .Where(j => j.JobId == id)
-                              .Select(j => new JobViewModel
-                              {
-                                  JobId = j.JobId,
-                                  JobName = j.JobName,
-                                  FilePath = j.FilePath,
-                                  ExpectedArrivalTime = j.ExpectedArrivalTime,
-                                  CheckIntervalMinutes = j.CheckIntervalMinutes,
-                                  BoxId = j.BoxId
-                              })
-                              .FirstOrDefault();
+                .Include(j => j.Box)
+                .Include(j => j.Calendar)
+                .Where(j => j.JobId == id)
+                .Select(j => new DeleteViewModel
+                {
+                    JobId = j.JobId,
+                    JobName = j.JobName,
+                    FilePath = j.FilePath,
+                    ExpectedArrivalTime = j.ExpectedArrivalTime,
+                    CheckIntervalMinutes = j.CheckIntervalMinutes,
+                    BoxName = j.Box != null ? j.Box.BoxName : "None",
+                    CalendarName = j.Calendar != null ? j.Calendar.Name : "None",
+                    IsActive = j.IsActive
+                })
+                .FirstOrDefault();
+
+            // Check if the job exists
+            if (job == null)
+            {
+                return NotFound();
+            }
+
+            // Return the view with the DeleteViewModel
+            return View(job);
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var job = await _context.Jobs.FindAsync(id);
 
             if (job == null)
             {
                 return NotFound();
             }
 
-            return View(job);
-        }
+            _context.Jobs.Remove(job);
+            await _context.SaveChangesAsync();
 
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var job = _context.Jobs.Find(id);
-
-            if (job != null)
-            {
-                _context.Jobs.Remove(job);
-                _context.SaveChanges();
-            }
-
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
         private IEnumerable<string> GetModelStateErrors()
         {
