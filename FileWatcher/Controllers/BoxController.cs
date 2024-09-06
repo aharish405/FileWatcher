@@ -47,7 +47,8 @@ namespace FileWatcherApp.Controllers
                     CalendarName = b.Calendar != null ? b.Calendar.Name : "None",
                     CalendarDays = b.Calendar != null ? b.Calendar.CalendarDays : new List<CalendarDay>(),
                     Timezone = b.Calendar != null ? b.Calendar.Timezone : "None",
-                    ScheduleType = b.Calendar != null ? b.Calendar.ScheduleType : new ScheduleType()
+                    ScheduleType = b.Calendar != null ? b.Calendar.ScheduleType : new ScheduleType(),
+                    IsActive = b.IsActive,
                 }).ToList(),
                 CurrentPage = page,
                 TotalPages = (int)Math.Ceiling(count / (double)PageSize),
@@ -83,14 +84,15 @@ namespace FileWatcherApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(BoxCreateViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var box = new Box
                 {
                     BoxName = model.BoxName,
                     ScheduleTime = model.ScheduleTime,
                     CalendarId = model.CalendarId,
-                    ExcludeCalendarId=model.ExcludeCalendarId
+                    ExcludeCalendarId=model.ExcludeCalendarId,
+                    IsActive=model.IsActive
                 };
 
                 _context.Boxes.Add(box);
@@ -126,7 +128,9 @@ namespace FileWatcherApp.Controllers
                                         BoxId = b.BoxId,
                                         BoxName = b.BoxName,
                                         ScheduleTime = b.ScheduleTime,
-                                        CalendarId = b.CalendarId
+                                        CalendarId = b.CalendarId,
+                                        ExcludeCalendarId=b.ExcludeCalendarId, 
+                                        IsActive=b.IsActive
                                     })
                                     .FirstOrDefaultAsync();
 
@@ -143,6 +147,12 @@ namespace FileWatcherApp.Controllers
                     Text = c.Name,
                     Selected = c.Id == box.CalendarId
                 });
+            box.ExcludeCalendarList = _context.ExcludeCalendars
+              .Select(x => new SelectListItem
+              {
+                  Value = x.ExcludeCalendarId.ToString(),
+                  Text = x.Name
+              }).ToList();
 
             return View(box);
         }
@@ -150,7 +160,7 @@ namespace FileWatcherApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(BoxEditViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var box = await _context.Boxes.FindAsync(model.BoxId);
 
@@ -162,6 +172,8 @@ namespace FileWatcherApp.Controllers
                 box.BoxName = model.BoxName;
                 box.ScheduleTime = model.ScheduleTime;
                 box.CalendarId = model.CalendarId;
+                box.IsActive = model.IsActive;
+                box.ExcludeCalendarId = model.ExcludeCalendarId;
 
                 _context.Boxes.Update(box);
                 await _context.SaveChangesAsync();
@@ -176,6 +188,12 @@ namespace FileWatcherApp.Controllers
                     Text = c.Name,
                     Selected = c.Id == model.CalendarId
                 });
+            model.ExcludeCalendarList = _context.ExcludeCalendars
+              .Select(x => new SelectListItem
+              {
+                  Value = x.ExcludeCalendarId.ToString(),
+                  Text = x.Name
+              }).ToList();
 
             return View(model);
         }

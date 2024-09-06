@@ -19,9 +19,9 @@
             <th>Box Name</th>
             <th>Job Name</th>
             <th>Source Team</th>
-            <th>File Path</th>
+            <th style="max-width:200px;word-wrap:anywhere">File Path</th>
             <th>Expected Arrival Time</th>
-            <th>Check Interval (Min)</th>            
+            <th>Check Before (Min)</th>            
             <th>Calendar</th>
             <th>Time Zone</th>
             <th>Ignore Box Schedule</th>
@@ -36,7 +36,7 @@
                 <td>@(job.Box != null ? job.Box.BoxName : "N/A")</td>
                 <td>@job.JobName</td>
                 <td>@job.SourceTeamContact</td>
-                <td>@job.FilePath</td>
+                <td style="max-width:200px;word-wrap:anywhere">@job.FilePath</td>
                 <td>@job.ExpectedArrivalTime.ToString("HH:mm")</td>
                 <td>@job.CheckIntervalMinutes</td>                
                 <td>@(job.Calendar != null ? job.Calendar.Name : "N/A")</td>
