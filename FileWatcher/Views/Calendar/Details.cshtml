@@ -1,0 +1,31 @@
+﻿@model FileWatcherApp.Models.Calendar.CalendarDetailsViewModel
+
+<div class="card mb-3">
+    <div class="card-header">
+       View Calendar Details
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Calendar ID</dt>
+            <dd class="col-sm-9">@Model.CalendarId</dd>
+
+            <dt class="col-sm-3">Name</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">Schedule Type</dt>
+            <dd class="col-sm-9">@Model.ScheduleType</dd>
+
+            <dt class="col-sm-3">Days</dt>
+            <dd class="col-sm-9">@Model.Days</dd>
+
+            <dt class="col-sm-3">Timezone</dt>
+            <dd class="col-sm-9">@Model.Timezone</dd>
+
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+        </dl>
+        <a class="btn btn-primary" href="@Url.Action("Index")">Back to List</a>
+
+    </div>
+</div>
+

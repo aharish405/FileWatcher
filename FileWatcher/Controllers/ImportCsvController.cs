@@ -55,16 +55,16 @@ namespace FileWatcherApp.Controllers
                     if (model.ImportType == "Box")
                     {
                         var list = await ProcessBoxImport(csvData);
-                        return  ReturnCsvFile(list, "BoxImportResults.csv");
+                        return ReturnCsvFile(list, "BoxImportResults.csv");
                     }
                     else if (model.ImportType == "Job")
                     {
                         var list = await ProcessJobImport(csvData);
-                        return  ReturnCsvFile(list, "JobImportResults.csv");
+                        return ReturnCsvFile(list, "JobImportResults.csv");
                     }
                     else
                     {
-                        
+                        ModelState.AddModelError(string.Empty, "Invalid import type.");
                         return View("Index", model);
                     }
                 }
@@ -76,11 +76,10 @@ namespace FileWatcherApp.Controllers
             }
         }
 
-        private async Task <List<string[]>>ProcessBoxImport(List<string[]> csvData)
+        private async Task<List<string[]>> ProcessBoxImport(List<string[]> csvData)
         {
-
             var results = new List<string[]>();
-            
+
             for (int i = 1; i < csvData.Count; i++)
             {
                 var row = csvData[i];
@@ -89,37 +88,29 @@ namespace FileWatcherApp.Controllers
                     var box = new Box
                     {
                         BoxName = row[0],
-                        ScheduleTime = DateTime.ParseExact(row[1], "HH:mm:ss", CultureInfo.InvariantCulture)
+                        CalendarId = string.IsNullOrEmpty(row[1]) ? (int?)null : int.Parse(row[1]),
+                        ScheduleTime = DateTime.ParseExact(row[2], "HH:mm:ss", CultureInfo.InvariantCulture),
+                        IsActive = bool.Parse(row[3]),
+                        NotifySourceTeamAutomatically = bool.Parse(row[4]),
+                        ExcludeCalendarId = string.IsNullOrEmpty(row[5]) ? (int?)null : int.Parse(row[5])
                     };
 
                     _context.Boxes.Add(box);
                     await _context.SaveChangesAsync();
                     // If import is successful, add a success status
-                    results.Add(row.Concat(["Imported", ""]).ToArray());
+                    results.Add(row.Concat(new[] { "Imported", "" }).ToArray());
                 }
                 catch (System.Exception ex)
                 {
                     // If import fails, add an error message
-                    results.Add(row.Concat(["Failed", ex.Message]).ToArray());
+                    results.Add(row.Concat(new[] { "Failed", ex.Message }).ToArray());
                 }
             }
             return results;
         }
-        private IActionResult ReturnCsvFile(List<string[]> results, string fileName)
-        {
-            var sb = new StringBuilder();
 
-            foreach (var row in results)
-            {
-                sb.AppendLine(string.Join(",", row));
-            }
-
-            var bytes = Encoding.UTF8.GetBytes(sb.ToString());
-            return File(bytes, "text/csv", fileName);
-        }
         private async Task<List<string[]>> ProcessJobImport(List<string[]> csvData)
         {
-
             var results = new List<string[]>();
 
             for (int i = 1; i < csvData.Count; i++)
@@ -133,25 +124,41 @@ namespace FileWatcherApp.Controllers
                         FilePath = row[1],
                         ExpectedArrivalTime = DateTime.ParseExact(row[2], "HH:mm:ss", CultureInfo.InvariantCulture),
                         CheckIntervalMinutes = int.Parse(row[3]),
-                        BoxId = int.Parse(row[4])
+                        BoxId = int.Parse(row[4]),
+                        IsActive = bool.Parse(row[5]),
+                        NotifySourceTeamAutomatically = bool.Parse(row[6]),
+                        SourceTeamContact = row[7],
+                        AxwayID = row[8],
+                        CalendarId = string.IsNullOrEmpty(row[9]) ? (int?)null : int.Parse(row[9]),
+                        IgnoreBoxSchedule = bool.Parse(row[10])
                     };
 
                     _context.Jobs.Add(job);
                     await _context.SaveChangesAsync();
-
                     // If import is successful, add a success status
-                    results.Add(row.Concat(["Imported", ""]).ToArray());
+                    results.Add(row.Concat(new[] { "Imported", "" }).ToArray());
                 }
                 catch (System.Exception ex)
                 {
                     // If import fails, add an error message
-                    results.Add(row.Concat(["Failed", ex.Message]).ToArray());
+                    results.Add(row.Concat(new[] { "Failed", ex.Message }).ToArray());
                 }
-
             }
 
             return results;
+        }
 
+        private IActionResult ReturnCsvFile(List<string[]> results, string fileName)
+        {
+            var sb = new StringBuilder();
+
+            foreach (var row in results)
+            {
+                sb.AppendLine(string.Join(",", row));
+            }
+
+            var bytes = Encoding.UTF8.GetBytes(sb.ToString());
+            return File(bytes, "text/csv", fileName);
         }
 
         public IActionResult DownloadTemplate(string templateType)
@@ -181,19 +188,17 @@ namespace FileWatcherApp.Controllers
         private string GenerateBoxTemplate()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("BoxName,ScheduleTime");
-            sb.AppendLine("Example Box,14:00:00"); // Add an example row
+            sb.AppendLine("BoxName,CalendarId,ScheduleTime,IsActive,NotifySourceTeamAutomatically,ExcludeCalendarId");
+            sb.AppendLine("Example Box,,14:00:00,true,true,"); // Add an example row
             return sb.ToString();
         }
 
         private string GenerateJobTemplate()
         {
             var sb = new StringBuilder();
-            sb.AppendLine("JobName,FilePath,ExpectedArrivalTime,CheckIntervalMinutes,BoxId");
-            sb.AppendLine("Example Job,/path/to/file.txt,15:30:00,30,1"); // Add an example row
+            sb.AppendLine("JobName,FilePath,ExpectedArrivalTime,CheckIntervalMinutes,BoxId,IsActive,NotifySourceTeamAutomatically,SourceTeamContact,AxwayID,CalendarId,IgnoreBoxSchedule");
+            sb.AppendLine("Example Job,/path/to/file.txt,15:30:00,30,1,true,true,contact@example.com,AX123,,false"); // Add an example row
             return sb.ToString();
         }
     }
-
 }
-

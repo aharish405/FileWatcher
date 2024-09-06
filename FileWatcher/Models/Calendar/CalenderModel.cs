@@ -11,24 +11,20 @@ namespace FileWatcherApp.Models.Calendar
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Schedule Type is required")]
-        public string ScheduleType { get; set; } // Display the ScheduleType as a string
+        public string ScheduleType { get; set; } 
 
-        public string Days { get; set; } // Display specific days for custom schedules
+        public string Days { get; set; } 
 
-        public string Timezone { get; set; } // New field for timezone
+        public string Timezone { get; set; } 
 
-        public string Description { get; set; } // New field for description
-
-        // List of Schedule Types for dropdown
+        public string Description { get; set; } 
         public IEnumerable<SelectListItem> ScheduleTypes { get; set; }
     }
 
     public class CalendarListViewModel
     {
         public IEnumerable<CalendarViewModel> Calendars { get; set; }
-        public string SearchString { get; set; }
-        public int CurrentPage { get; set; }
-        public int TotalPages { get; set; }
+        
     }
 
 }

@@ -1,53 +1,60 @@
 ﻿@model FileWatcherApp.Models.Calendar.CalendarViewModel
 
-<h2>Edit Calendar</h2>
-
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="CalendarId" />
-
-    <div class="form-group">
-        <label asp-for="Name" class="control-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+<div class="card mb-3">
+    <div class="card-header">
+        Edit Calendar
     </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="CalendarId" />
 
-    <div class="form-group">
-        <label asp-for="ScheduleType" class="control-label"></label>
-        <select asp-for="ScheduleType" class="form-control">
-            <option value="Daily">Daily</option>
-            <option value="Weekly">Weekly</option>
-            <option value="Weekdays">Weekdays (Mon-Fri)</option>
-            <option value="Custom">Custom</option>
-        </select>
-        <span asp-validation-for="ScheduleType" class="text-danger"></span>
-    </div>
-    <div class="form-group" id="custom-days">
-    <label for="CalendarDays">Custom Days</label>
-    <select id="CalendarDays" name="CalendarDays" class="form-control" multiple>
-        @foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
-        {
-            <option value="@day" selected=@(Model.Days != null && Model.Days.Split(',').Contains(day.ToString()) ? "selected" : "")>@day</option>
-        }
-    </select>
-    </div>
-    <input type="hidden" asp-for="Days" id="Days" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
 
-    <div class="form-group">
-        <label asp-for="Timezone" class="control-label"></label>
-        <input asp-for="Timezone" class="form-control" />
-        <span asp-validation-for="Timezone" class="text-danger"></span>
-    </div>
+            <div class="form-group">
+                <label asp-for="ScheduleType" class="control-label"></label>
+                <select asp-for="ScheduleType" class="form-control">
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Weekdays">Weekdays (Mon-Fri)</option>
+                    <option value="Custom">Custom</option>
+                </select>
+                <span asp-validation-for="ScheduleType" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="custom-days">
+                <label for="CalendarDays">Custom Days</label>
+                <select id="CalendarDays" name="CalendarDays" class="form-control" multiple>
+                    @foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+                    {
+                        <option value="@day" selected=@(Model.Days != null && Model.Days.Split(',').Contains(day.ToString()) ? "selected" : "")>@day</option>
+                    }
+                </select>
+            </div>
+            <input type="hidden" asp-for="Days" id="Days" />
 
-    <div class="form-group">
-        <label asp-for="Description" class="control-label"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
+            <div class="form-group">
+                <label asp-for="Timezone" class="control-label"></label>
+                <input asp-for="Timezone" class="form-control" />
+                <span asp-validation-for="Timezone" class="text-danger"></span>
+            </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Save</button>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+
+
 
 @section Scripts {
     <script>

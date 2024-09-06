@@ -15,10 +15,9 @@ namespace FileWatcherApp.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(string searchString, int page = 1)
+        public IActionResult _Index(string searchString, int page = 1)
         {
-            const int pageSize = 10;
-
+            
             var query = _context.Calendars
                                 .Include(c => c.CalendarDays)
                                 .AsQueryable();
@@ -30,9 +29,7 @@ namespace FileWatcherApp.Controllers
 
             var totalCount = query.Count();
 
-            var calendars = query.Skip((page - 1) * pageSize)
-                                 .Take(pageSize)
-                                 .Select(c => new CalendarViewModel
+            var calendars = query.Select(c => new CalendarViewModel
                                  {
                                      CalendarId = c.Id,
                                      Name = c.Name,
@@ -49,10 +46,72 @@ namespace FileWatcherApp.Controllers
 
             var viewModel = new CalendarListViewModel
             {
-                Calendars = calendars,
-                SearchString = searchString,
-                CurrentPage = page,
-                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+                Calendars = calendars                
+            };
+
+            return View(viewModel);
+        }
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public PartialViewResult Grid()
+        {
+            var query = _context.Calendars.AsQueryable();
+
+            var calendars = query.Select(c => new CalendarViewModel
+            {
+                CalendarId = c.Id,
+                Name = c.Name,
+                ScheduleType = c.ScheduleType.ToString(),
+                Days = FormatDays(c),
+                Timezone = c.Timezone,
+                Description = c.Description
+            }).ToList();
+
+            return PartialView("_Grid", calendars);
+        }
+
+        // Helper method to format days based on schedule type
+        private static string FormatDays(Calendar calendar)
+        {
+            if (calendar.CalendarDays == null || !calendar.CalendarDays.Any())
+            {
+                return calendar.ScheduleType switch
+                {
+                    ScheduleType.Weekly => "Weekly",
+                    ScheduleType.Weekdays => "Weekdays (Mon-Fri)",
+                    _ => "Daily"
+                };
+            }
+
+            return calendar.ScheduleType switch
+            {
+                ScheduleType.Custom => string.Join(", ", calendar.CalendarDays.Select(d => d.DayOfWeek.ToString())),
+                ScheduleType.Weekly => "Weekly",
+                ScheduleType.Weekdays => "Weekdays (Mon-Fri)",
+                _ => "Daily"
+            };
+        }
+        public async Task<IActionResult> Details(int id)
+        {
+            var calendar = await _context.Calendars
+                .Include(c => c.CalendarDays)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (calendar == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new CalendarDetailsViewModel
+            {
+                CalendarId = calendar.Id,
+                Name = calendar.Name,
+                ScheduleType = calendar.ScheduleType.ToString(),
+                Days = FormatDays(calendar),
+                Timezone = calendar.Timezone,
+                Description = calendar.Description
             };
 
             return View(viewModel);

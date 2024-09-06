@@ -1,0 +1,22 @@
+﻿@using FileWatcherApp.Models.Calendar
+@using NonFactors.Mvc.Grid
+@model IEnumerable<CalendarViewModel>
+
+@Html.Grid(Model).Build(columns =>
+    {
+        columns.Add(c => c.CalendarId).Titled("ID").Sortable(true);
+        columns.Add(c => c.Name).Titled("Name").Sortable(true);
+        columns.Add(c => c.ScheduleType).Titled("Schedule Type").Sortable(true);
+        columns.Add(c => c.Days).Titled("Days").Sortable(true);
+        columns.Add(c => c.Timezone).Titled("Timezone").Sortable(true);
+        columns.Add(c => c.Description).Titled("Description").Sortable(true);
+
+        columns.Add()
+            .Titled("Actions")
+            .RenderedAs(c =>
+                Html.Raw($"<div class='input-group'>" +
+                         $"<a class='btn btn-primary btn-sm' href='/Calendar/Details/{c.CalendarId}'>View</a> " +
+                         $"<a class='btn btn-warning btn-sm' href='/Calendar/Edit/{c.CalendarId}'>Edit</a> " +
+                         $"<a class='btn btn-danger btn-sm' href='/Calendar/Delete/{c.CalendarId}'>Delete</a>" +
+                         $"</div>"));
+    }).Empty("No records found.").Pageable(pager => { pager.RowsPerPage = 10; }).Filterable().Sortable()
