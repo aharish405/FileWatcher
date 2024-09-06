@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FileWatcherApp.Models.Job
 {
-    public class JobViewModel
+    public class CreateViewModel
     {
         public int JobId { get; set; }
 
@@ -24,15 +22,12 @@ namespace FileWatcherApp.Models.Job
         [Required(ErrorMessage = "Box is required")]
         public int BoxId { get; set; }
         public string? SourceTeamContact { get; set; }
-        public string? BoxName { get; set; }
         public bool IsActive { get; set; }
+        public bool NotifySourceTeamAutomatically { get; set; }
 
         public IEnumerable<SelectListItem>? BoxList { get; set; }
-
-        // New Properties
         public int? CalendarId { get; set; }
-        public string? TimeZone { get; set; }
         public bool IgnoreBoxSchedule { get; set; }
-        public IEnumerable<SelectListItem>? CalendarList { get; set; } // To populate calendar dropdown
+        public IEnumerable<SelectListItem>? CalendarList { get; set; }
     }
 }

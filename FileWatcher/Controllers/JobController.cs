@@ -11,7 +11,6 @@ namespace FileWatcherApp.Controllers
     {
         private readonly FileWatcherContext _context;
         private const int PageSize = 10;
-
         public JobController(FileWatcherContext context)
         {
             _context = context;
@@ -53,7 +52,7 @@ namespace FileWatcherApp.Controllers
         }
         public IActionResult Create()
         {
-            var viewModel = new JobViewModel
+            var viewModel = new CreateViewModel
             {
                 // Populate BoxList with available boxes from the database
                 BoxList = _context.Boxes.Select(b => new SelectListItem
@@ -73,10 +72,10 @@ namespace FileWatcherApp.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public IActionResult Create(JobViewModel model)
+        public IActionResult Create(CreateViewModel model)
         {
             var errors = GetModelStateErrors();
-            if (errors.Count() <= 5)
+            if (ModelState.IsValid)
             {
                 var job = new Job
                 {
@@ -86,9 +85,10 @@ namespace FileWatcherApp.Controllers
                     CheckIntervalMinutes = model.CheckIntervalMinutes,
                     SourceTeamContact = model.SourceTeamContact,
                     BoxId = model.BoxId,
-                    CalendarId = model.CalendarId, // New property
-                    //TimeZone = model.TimeZone,     // New property
-                    IgnoreBoxSchedule = model.IgnoreBoxSchedule // New property
+                    CalendarId = model.CalendarId,
+                    IgnoreBoxSchedule = model.IgnoreBoxSchedule,
+                    IsActive = model.IsActive,
+                    NotifySourceTeamAutomatically=model.NotifySourceTeamAutomatically
                 };
 
                 _context.Jobs.Add(job);

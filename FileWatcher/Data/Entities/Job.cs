@@ -10,6 +10,7 @@ namespace FileWatcherApp.Data.Entities
         public required string JobName { get; set; }
         public required string FilePath { get; set; }
         public bool IsActive { get; set; }
+        public bool NotifySourceTeamAutomatically { get; set; }
         public string? SourceTeamContact { get; set; }
         public DateTime ExpectedArrivalTime { get; set; }
         public int CheckIntervalMinutes { get; set; }
