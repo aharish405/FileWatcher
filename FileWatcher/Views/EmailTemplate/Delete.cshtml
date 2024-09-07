@@ -1,0 +1,27 @@
+﻿@model FileWatcherApp.Models.EmailTemplate.CreateEmailTemplateViewModel
+
+<div class="card">
+    <div class="card-header">Delete Email Template</div>
+    <div class="card-body">
+        <form asp-action="DeleteConfirmed" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <p>Are you sure you want to delete this template?</p>
+                <div class="form-group">
+                    <label asp-for="TemplateName" class="control-label">Template Name:</label>
+                    <p>@Model.TemplateName</p>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Subject" class="control-label">Subject:</label>
+                    <p>@Model.Subject</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-danger">Delete</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

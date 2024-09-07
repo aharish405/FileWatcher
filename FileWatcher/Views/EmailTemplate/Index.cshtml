@@ -1,0 +1,12 @@
+﻿@using NonFactors.Mvc.Grid
+@model IEnumerable<FileWatcherApp.Models.EmailTemplate.CreateEmailTemplateViewModel>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Email Templates</span>
+        <a class="btn btn-success btn-sm" asp-action="Create">+ Create New Template</a>
+    </div>
+    <div class="card-body">
+        @Html.AjaxGrid(Url.Action("Grid", "EmailTemplate"))
+    </div>
+</div>
