@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\lib\text-editor\langs\**" />
+    <Content Remove="wwwroot\lib\text-editor\langs\**" />
+    <EmbeddedResource Remove="wwwroot\lib\text-editor\langs\**" />
+    <None Remove="wwwroot\lib\text-editor\langs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Models\Box\BoxViewModel.cs" />
     <Compile Remove="Models\Viewmodels.cs" />
   </ItemGroup>
@@ -15,6 +22,66 @@
     <None Include="Views\Shared\MvcGrid\_Grid.cshtml" />
     <None Include="Views\Shared\MvcGrid\_Pager.cshtml" />
     <None Include="wwwroot\js\mvc-grid\mvc-grid.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\allowtagsfrompaste\trumbowyg.allowtagsfrompaste.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\allowtagsfrompaste\trumbowyg.allowtagsfrompaste.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\base64\trumbowyg.base64.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\base64\trumbowyg.base64.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\cleanpaste\trumbowyg.cleanpaste.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\cleanpaste\trumbowyg.cleanpaste.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\colors\trumbowyg.colors.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\colors\trumbowyg.colors.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\colors\ui\sass\trumbowyg.colors.scss" />
+    <None Include="wwwroot\lib\text-editor\plugins\emoji\trumbowyg.emoji.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\emoji\trumbowyg.emoji.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\emoji\ui\sass\trumbowyg.emoji.scss" />
+    <None Include="wwwroot\lib\text-editor\plugins\fontfamily\trumbowyg.fontfamily.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\fontfamily\trumbowyg.fontfamily.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\fontsize\trumbowyg.fontsize.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\fontsize\trumbowyg.fontsize.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\giphy\trumbowyg.giphy.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\giphy\trumbowyg.giphy.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\giphy\ui\sass\trumbowyg.giphy.scss" />
+    <None Include="wwwroot\lib\text-editor\plugins\highlight\trumbowyg.highlight.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\highlight\trumbowyg.highlight.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\highlight\ui\sass\trumbowyg.highlight.scss" />
+    <None Include="wwwroot\lib\text-editor\plugins\history\trumbowyg.history.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\history\trumbowyg.history.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\indent\trumbowyg.indent.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\indent\trumbowyg.indent.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\insertaudio\trumbowyg.insertaudio.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\insertaudio\trumbowyg.insertaudio.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\lineheight\trumbowyg.lineheight.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\lineheight\trumbowyg.lineheight.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\mathml\trumbowyg.mathml.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\mathml\trumbowyg.mathml.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\mathml\ui\sass\trumbowyg.mathml.scss" />
+    <None Include="wwwroot\lib\text-editor\plugins\mention\trumbowyg.mention.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\mention\trumbowyg.mention.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\mention\ui\sass\trumbowyg.mention.scss" />
+    <None Include="wwwroot\lib\text-editor\plugins\noembed\trumbowyg.noembed.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\noembed\trumbowyg.noembed.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\pasteembed\trumbowyg.pasteembed.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\pasteembed\trumbowyg.pasteembed.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\pasteimage\trumbowyg.pasteimage.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\pasteimage\trumbowyg.pasteimage.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\preformatted\trumbowyg.preformatted.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\preformatted\trumbowyg.preformatted.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\resizimg\trumbowyg.resizimg.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\resizimg\trumbowyg.resizimg.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\ruby\trumbowyg.ruby.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\ruby\trumbowyg.ruby.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\specialchars\trumbowyg.specialchars.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\specialchars\trumbowyg.specialchars.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\specialchars\ui\sass\trumbowyg.specialchars.scss" />
+    <None Include="wwwroot\lib\text-editor\plugins\table\trumbowyg.table.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\table\trumbowyg.table.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\table\ui\sass\trumbowyg.table.scss" />
+    <None Include="wwwroot\lib\text-editor\plugins\template\trumbowyg.template.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\template\trumbowyg.template.min.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\upload\trumbowyg.upload.js" />
+    <None Include="wwwroot\lib\text-editor\plugins\upload\trumbowyg.upload.min.js" />
+    <None Include="wwwroot\lib\text-editor\ui\icons.svg" />
+    <None Include="wwwroot\lib\text-editor\ui\sass\trumbowyg.scss" />
   </ItemGroup>
 
   <ItemGroup>

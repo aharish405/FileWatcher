@@ -1,0 +1,50 @@
+﻿@model FileWatcherApp.Models.EmailTemplate.EmailTemplateViewModel
+
+
+<h2>@ViewBag.Title</h2>
+
+<form asp-action="@(ViewBag.Title == "Edit Email Template" ? "Edit" : "Create")">
+    <div class="form-group">
+        <label asp-for="TemplateName"></label>
+        <input asp-for="TemplateName" class="form-control" />
+        <span asp-validation-for="TemplateName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Subject"></label>
+        <input asp-for="Subject" class="form-control" />
+        <span asp-validation-for="Subject" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EmailBody"></label>
+        <textarea asp-for="EmailBody" class="form-control" id="emailBody"></textarea>
+        <span asp-validation-for="EmailBody" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function() {
+            $('#emailBody').trumbowyg({
+                btns: [
+                    ['viewHTML'],
+                    ['formatting'],
+                    ['fontfamily'],
+                    ['strong', 'em', 'del'],
+                    ['superscript', 'subscript'],
+                    ['link'],
+                    //['insertImage'],
+                    ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                    ['unorderedList', 'orderedList'],
+                    ['horizontalRule'],
+                    ['removeformat'],
+                    //['fullscreen'],
+                    ['foreColor', 'backColor']
+                ],
+                autogrow: true
+            });
+        });
+    </script>
+}
+

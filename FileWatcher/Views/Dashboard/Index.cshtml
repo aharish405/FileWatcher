@@ -9,7 +9,7 @@
                 <button class="btn btn-primary" type="submit">Search</button>
             </div>
         </form>
-        <div class="row my-4">
+        <div class="row">
             <div class="col-md-3">
                 <div class="card text-white bg-primary mb-3">
                     <div class="card-body">
@@ -64,7 +64,7 @@
                             <span class="badge bg-info">Schedule: @box.ScheduleTime.ToString("HH:mm")</span>
                         </button>
                     </h2>
-                    <div id="collapse@(boxId)" class="accordion-collapse collapse @(Model.Boxes.First() == box ? "show" : "")" aria-labelledby="heading@(boxId)" data-bs-parent="#boxAccordion">
+                    <div id="collapse@(boxId)" class="accordion-collapse collapse" aria-labelledby="heading@(boxId)" data-bs-parent="#boxAccordion">
                         <div class="accordion-body">
                             <ul class="list-group">
                                 @if (box.Jobs != null && box.Jobs.Any())
@@ -116,16 +116,3 @@
     </div>
 </div>
 
-
-
-<div class="container">
-    <!-- Summary Cards -->
-    <!-- Accordion -->
-
-</div>
-
-
-
-<!-- Pagination Controls -->
-<!-- Bootstrap JS and dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

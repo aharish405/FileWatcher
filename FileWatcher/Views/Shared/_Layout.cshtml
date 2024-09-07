@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FileWatcher</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-@*     <link href="~/lib/jquery/dist/jquery-ui.min.css" rel="stylesheet" /> *@
+    @*     <link href="~/lib/jquery/dist/jquery-ui.min.css" rel="stylesheet" /> *@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <style>
@@ -82,9 +82,18 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-@*     <script src="~/lib/jquery/dist/jquery-ui.js"></script>
+    @*   <script src="~/lib/jquery/dist/jquery-ui.js"></script>
     <script src="~/lib/jquery/dist/jquery-ui.min.js"></script> *@
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @*  Trumbowyg  TextEditor *@
+    <link href="~/lib/text-editor/ui/trumbowyg.min.css" rel="stylesheet" />
+    <script src="~/lib/text-editor/trumbowyg.min.js"></script>
+    <script src="~/lib/text-editor/plugins/colors/trumbowyg.colors.min.js"></script>
+    <link href="~/lib/text-editor/plugins/colors/ui/trumbowyg.colors.min.css" rel="stylesheet" />
+    <script src="~/lib/text-editor/plugins/fontfamily/trumbowyg.fontfamily.min.js"></script>
+
+
     @await RenderSectionAsync("Scripts", required: false)
 
     @*MVC GRID*@
