@@ -2,7 +2,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h2>Create Notification</h2>
+        Create Notification
     </div>
     <div class="card-body">
         <form asp-action="Create">
@@ -11,28 +11,33 @@
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Recipients" class="control-label"></label>
                 <input asp-for="Recipients" class="form-control" />
                 <span asp-validation-for="Recipients" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="NotifySourceTeam" class="control-label"></label>
-                <input asp-for="NotifySourceTeam" class="form-control" type="checkbox" />
+            <div class="input-group mb-3">
+                <div class="form-check form-switch me-3">
+                    <input class="form-check-input" asp-for="NotifySourceTeam" type="checkbox">
+                    <label class="form-check-label" for="NotifySourceTeam">Notify Source Team</label>
+                </div>
+                <div class="form-check form-switch me-3">
+                    <input class="form-check-input" asp-for="NotifySupportTeam" type="checkbox">
+                    <label class="form-check-label" for="NotifySupportTeam">Notify Support Team</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" asp-for="NotifyL1L2Team" type="checkbox">
+                    <label class="form-check-label" for="NotifyL1L2Team">Notify L1 L2Team </label>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="NotifySupportTeam" class="control-label"></label>
-                <input asp-for="NotifySupportTeam" class="form-control" type="checkbox" />
+
+            <div class="input-group mb-3">
+                <div class="form-check form-switch me-3">
+                    <input class="form-check-input" asp-for="Enabled" type="checkbox" checked>
+                    <label class="form-check-label" for="Enabled">Enabled</label>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="NotifyL1L2Team" class="control-label"></label>
-                <input asp-for="NotifyL1L2Team" class="form-control" type="checkbox" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Enabled" class="control-label"></label>
-                <input asp-for="Enabled" class="form-control" type="checkbox" />
-            </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="EmailTemplateId" class="control-label"></label>
                 <select asp-for="EmailTemplateId" asp-items="Model.EmailTemplates" class="form-control"></select>
                 <span asp-validation-for="EmailTemplateId" class="text-danger"></span>

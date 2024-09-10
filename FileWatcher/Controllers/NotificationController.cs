@@ -26,9 +26,9 @@ namespace FileWatcherApp.Controllers
             return View();
         }
 
-        public PartialViewResult Grid()
+        public async Task<PartialViewResult> Grid()
         {
-            var notifications =  _context.Notifications
+            var notifications = await _context.Notifications
                 .Include(n => n.EmailTemplate)
                 .Select(n => new NotificationDetailViewModel
                 {
@@ -45,6 +45,7 @@ namespace FileWatcherApp.Controllers
 
             return PartialView("_Grid", notifications);
         }
+
 
         // GET: Notification/Create
         public IActionResult Create()
@@ -82,6 +83,36 @@ namespace FileWatcherApp.Controllers
             model.EmailTemplates = new SelectList(_context.EmailTemplates, "Id", "TemplateName", model.EmailTemplateId);
             return View(model);
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var job = await _context.Jobs
+                .Include(j => j.Box)
+                .Include(j => j.Calendar)
+                .FirstOrDefaultAsync(j => j.JobId == id);
+
+            if (job == null)
+            {
+                return NotFound();
+            }
+
+            var model = new JobDetailsViewModel
+            {
+                JobId = job.JobId,
+                JobName = job.JobName,
+                FilePath = job.FilePath,
+                ExpectedArrivalTime = job.ExpectedArrivalTime,
+                CheckIntervalMinutes = job.CheckIntervalMinutes,
+                BoxName = job.Box.BoxName,
+                CalendarName = job.Calendar?.CalendarName,
+                Timezone = job.Box.Timezone,  // Assuming timezone is stored in the Box entity
+                IsActive = job.IsActive,
+                NotifySourceTeamAutomatically = job.NotifySourceTeamAutomatically
+            };
+
+            return View(model);
+        }
+
 
         // GET: Notification/Edit/5
         public async Task<IActionResult> Edit(int? id)
