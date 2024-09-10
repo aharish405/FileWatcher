@@ -80,10 +80,21 @@ namespace FileWatcherApp.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var emailTemplate = await _context.EmailTemplates.FindAsync(id);
+            var emailTemplate = await _context.EmailTemplates
+            .FirstOrDefaultAsync(et => et.Id == id);
+
+            var notification= await _context.Notifications.FirstOrDefaultAsync(x=>x.EmailTemplateId==id);
             if (emailTemplate == null)
             {
                 return NotFound();
+            }
+            ViewBag.IsLinked = false;
+            // Check if the email template is linked to any notifications
+            if (notification!=null)
+            {
+                // Pass a flag or message to the view indicating the template cannot be edited
+                ViewBag.IsLinked = true;
+                ViewBag.Message = "This template is linked to one or more notifications. Modifications are not allowed. Please delete the linked notifications first.";
             }
 
             var model = new CreateEmailTemplateViewModel

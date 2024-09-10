@@ -3,6 +3,12 @@
 <div class="card">
     <div class="card-header">Edit Email Template</div>
     <div class="card-body">
+        @if ((bool)ViewBag.IsLinked)
+        {
+            <div class="alert alert-warning">
+                <strong>Warning:</strong> @ViewBag.Message
+            </div>
+        }
         <form asp-action="Edit" method="post">
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -24,7 +30,7 @@
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary" @((bool)ViewBag.IsLinked ? "disabled" : "")>Save</button>
             </div>
         </form>
     </div>
