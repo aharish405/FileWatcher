@@ -1,5 +1,6 @@
 ﻿using FileWatcherApp.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace FileWatcherApp.Data
 {
@@ -14,5 +15,6 @@ namespace FileWatcherApp.Data
         public DbSet<CalendarDay> CalendarDays { get; set; }
         public DbSet<ExcludeCalendar> ExcludeCalendars { get; set; }
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public DbSet< Notification> Notifications { get;  set; }
     }
 }

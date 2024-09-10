@@ -1,0 +1,13 @@
+﻿@using FileWatcherApp.Models.Notification
+@using NonFactors.Mvc.Grid
+@model IEnumerable<NotificationDetailViewModel>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Notifications</span>
+        <a class="btn btn-success btn-sm" asp-action="Create">+ Create New Notification</a>
+    </div>
+    <div class="card-body">
+        @Html.AjaxGrid(Url.Action("Grid", "Notification"))
+    </div>
+</div>

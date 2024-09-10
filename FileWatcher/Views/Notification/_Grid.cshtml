@@ -1,0 +1,24 @@
+﻿@model IEnumerable<FileWatcherApp.Models.Notification.NotificationDetailViewModel>
+
+@using NonFactors.Mvc.Grid
+
+@Html.Grid(Model).Build(columns =>
+        {
+            columns.Add(model => model.Id).Titled("ID").Sortable(true);
+            columns.Add(model => model.Title).Titled("Title").Sortable(true);
+            columns.Add(model => model.Recipients).Titled("Recipients").Sortable(true);
+            columns.Add(model => model.NotifySourceTeam).Titled("Notify Source Team").Sortable(true);
+            columns.Add(model => model.NotifySupportTeam).Titled("Notify Support Team").Sortable(true);
+            columns.Add(model => model.NotifyL1L2Team).Titled("Notify L1/L2 Team").Sortable(true);
+            columns.Add(model => model.Enabled).Titled("Enabled").Sortable(true);
+            columns.Add(model => model.EmailTemplateName).Titled("Email Template").Sortable(true);
+
+            columns.Add()
+                .Titled("Actions")
+                .RenderedAs(model =>
+                    Html.Raw($"<div class='input-group'>" +
+                             $"<a class='btn btn-primary btn-sm' href='/Notification/View/{model.Id}'>View</a> " +
+                             $"<a class='btn btn-primary btn-sm' href='/Notification/Edit/{model.Id}'>Edit</a> " +
+                             $"<a class='btn btn-danger btn-sm' href='/Notification/Delete/{model.Id}'>Delete</a>" +
+                             $"</div>"));
+        }).Empty("No records found.").Pageable(pager => { pager.RowsPerPage = 10; }).Filterable().Sortable()

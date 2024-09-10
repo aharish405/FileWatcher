@@ -1,0 +1,46 @@
+﻿@model FileWatcherApp.Models.Notification.EditNotificationViewModel
+
+<div class="card">
+    <div class="card-header">
+        <h2>Edit Notification</h2>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Recipients" class="control-label"></label>
+                <input asp-for="Recipients" class="form-control" />
+                <span asp-validation-for="Recipients" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NotifySourceTeam" class="control-label"></label>
+                <input asp-for="NotifySourceTeam" class="form-control" type="checkbox" />
+            </div>
+            <div class="form-group">
+                <label asp-for="NotifySupportTeam" class="control-label"></label>
+                <input asp-for="NotifySupportTeam" class="form-control" type="checkbox" />
+            </div>
+            <div class="form-group">
+                <label asp-for="NotifyL1L2Team" class="control-label"></label>
+                <input asp-for="NotifyL1L2Team" class="form-control" type="checkbox" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Enabled" class="control-label"></label>
+                <input asp-for="Enabled" class="form-control" type="checkbox" />
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailTemplateId" class="control-label"></label>
+                <select asp-for="EmailTemplateId" asp-items="Model.EmailTemplates" class="form-control"></select>
+                <span asp-validation-for="EmailTemplateId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

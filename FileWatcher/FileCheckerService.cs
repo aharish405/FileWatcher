@@ -41,81 +41,91 @@ public class FileCheckerService : BackgroundService
 
                     foreach (var job in jobs)
                     {
-                        var box = job.Box;
-                        var boxCalendar = box?.Calendar;
-
-                        // Check for excluded dates first
-                        if (box?.ExcludeCalendarId.HasValue == true)
+                        try
                         {
-                            // Retrieve the exclude calendar if applicable
-                            var excludeCalendar = await context.ExcludeCalendars
-                                .Where(ec => ec.ExcludeCalendarId == box.ExcludeCalendarId)
-                                .FirstOrDefaultAsync(stoppingToken);
+                            var box = job.Box;
+                            var boxCalendar = box?.Calendar;
 
-                            if (excludeCalendar != null)
+                            // Check for excluded dates first
+                            if (box?.ExcludeCalendarId.HasValue == true)
                             {
-                                // Check if the current date is in the excluded dates list
-                                var excludedDates = excludeCalendar.ExcludedDates;
-                                if (excludedDates.Contains(currentDate))
+                                // Retrieve the exclude calendar if applicable
+                                var excludeCalendar = await context.ExcludeCalendars
+                                    .Where(ec => ec.ExcludeCalendarId == box.ExcludeCalendarId)
+                                    .FirstOrDefaultAsync(stoppingToken);
+
+                                if (excludeCalendar != null)
                                 {
-                                    // Skip processing for today if it's an excluded date
-                                    continue;
-                                }
-                            }
-                        }
-
-                        TimeSpan startTime, endTime;
-
-                        if (job.IgnoreBoxSchedule)
-                        {
-                            // Use the job-specific time if IgnoreBoxSchedule is enabled
-                            startTime = job.ExpectedArrivalTime.TimeOfDay.Subtract(TimeSpan.FromMinutes(job.CheckIntervalMinutes));
-                            endTime = job.ExpectedArrivalTime.TimeOfDay;
-                        }
-                        else
-                        {
-                            // Use the box's schedule time
-                            if (boxCalendar != null)
-                            {
-                                // Determine if the current date is in the calendar days
-                                var todayDayOfWeek = currentDate.DayOfWeek;
-                                var calendarDays = boxCalendar.CalendarDays.Select(cd => cd.DayOfWeek).ToList();
-
-                                if (!calendarDays.Contains(todayDayOfWeek))
-                                {
-                                    // Skip checking if today is not in the calendar days
-                                    continue;
+                                    // Check if the current date is in the excluded dates list
+                                    var excludedDates = excludeCalendar.ExcludedDates;
+                                    if (excludedDates.Contains(currentDate))
+                                    {
+                                        // Skip processing for today if it's an excluded date
+                                        continue;
+                                    }
                                 }
                             }
 
-                            // Calculate start and end time based on the box's schedule
-                            startTime = box.ScheduleTime.TimeOfDay.Subtract(TimeSpan.FromMinutes(job.CheckIntervalMinutes));
-                            endTime = box.ScheduleTime.TimeOfDay;
-                        }
+                            TimeSpan startTime, endTime;
 
-                        // Check if the current time is within the check window
-                        //if (currentTime >= startTime && currentTime <= endTime)
-                        if (true)
-                        {
-                            // Resolve the file path with dynamic date placeholders
-                            string filePath = job.FilePath;
-                            filePath = ResolveFilePath(filePath, currentDate);
-
-                            // Check if the file exists
-                            bool isAvailable = File.Exists(filePath);
-                            string statusMessage = isAvailable ? "File is available" : "File is not available";
-
-                            // Create a new job status entry
-                            var jobStatus = new JobStatus
+                            if (job.IgnoreBoxSchedule)
                             {
-                                JobId = job.JobId,
-                                StatusDate = DateTime.Now,  // Store the current date and time
-                                IsAvailable = isAvailable,
-                                StatusMessage = statusMessage
-                            };
+                                // Use the job-specific time if IgnoreBoxSchedule is enabled
+                                startTime = job.ExpectedArrivalTime.TimeOfDay.Subtract(TimeSpan.FromMinutes(job.CheckIntervalMinutes));
+                                endTime = job.ExpectedArrivalTime.TimeOfDay;
+                            }
+                            else
+                            {
+                                // Use the box's schedule time
+                                if (boxCalendar != null)
+                                {
+                                    // Determine if the current date is in the calendar days
+                                    var todayDayOfWeek = currentDate.DayOfWeek;
+                                    var calendarDays = boxCalendar.CalendarDays.Select(cd => cd.DayOfWeek).ToList();
 
-                            // Add the job status to the context
-                            context.JobStatuses.Add(jobStatus);
+                                    if (!calendarDays.Contains(todayDayOfWeek))
+                                    {
+                                        // Skip checking if today is not in the calendar days
+                                        continue;
+                                    }
+                                }
+
+                                // Calculate start and end time based on the box's schedule
+                                startTime = box.ScheduleTime.TimeOfDay.Subtract(TimeSpan.FromMinutes(job.CheckIntervalMinutes));
+                                endTime = box.ScheduleTime.TimeOfDay;
+                            }
+
+                            // Check if the current time is within the check window
+                            //if (currentTime >= startTime && currentTime <= endTime)
+                            if (true)
+                            {
+                                // Resolve the file path with dynamic date placeholders
+                                string filePath = job.FilePath;
+                                filePath = ResolveFilePath(filePath, currentDate);
+
+                                // Check if the file exists
+                                bool isAvailable = File.Exists(filePath);
+                                string statusMessage = isAvailable ? "File is available" : "File is not available";
+
+                                // Create a new job status entry
+                                var jobStatus = new JobStatus
+                                {
+                                    JobId = job.JobId,
+                                    StatusDate = DateTime.Now,  // Store the current date and time
+                                    IsAvailable = isAvailable,
+                                    StatusMessage = statusMessage
+                                };
+
+                                // Add the job status to the context
+                                context.JobStatuses.Add(jobStatus);
+                            }
+                        }
+                        catch (Exception x)
+                        {
+                            string message = $":{x.Message} for job: {job.JobName}";
+                            _logger.LogError(message);
+                            continue;
+                            //throw;
                         }
                     }
 
