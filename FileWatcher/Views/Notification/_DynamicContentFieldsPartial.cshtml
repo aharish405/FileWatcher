@@ -1,0 +1,27 @@
+﻿@model FileWatcherApp.Models.Notification.CreateNotificationViewModel 
+
+<div class="card">
+    <div class="card-body">
+        @foreach (var dynamicField in Model.DynamicContentFields)
+        {
+            <div class="form-group">
+                <label>Map: {@dynamicField} to</label>
+                <select name="DynamicContentMapping[@dynamicField]" class="form-control">
+                    <optgroup label="Job">
+                        @foreach (var jobField in Model.EntityProperties["Job"])
+                        {
+                            <option value="Job.@jobField">@jobField </option>
+                        }
+                    </optgroup>
+                    <optgroup label="Box">
+                        @foreach (var boxField in Model.EntityProperties["Box"])
+                        {
+                            <option value="Box.@boxField">@boxField</option>
+                        }
+                    </optgroup>
+                </select>
+            </div>
+        }
+    </div>
+
+</div>

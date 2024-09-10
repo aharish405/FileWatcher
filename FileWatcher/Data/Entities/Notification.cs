@@ -10,7 +10,8 @@
         public bool NotifyL1L2Team { get; set; }
         public bool Enabled { get; set; }
 
-        public int EmailTemplateId { get; set; }
+        public int EmailTemplateId { get; set; }        
         public EmailTemplate EmailTemplate { get; set; }
+        public string DynamicContentFields { get; set; }
     }
 }

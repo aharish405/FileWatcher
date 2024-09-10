@@ -17,8 +17,8 @@
                 .Titled("Actions")
                 .RenderedAs(model =>
                     Html.Raw($"<div class='input-group'>" +
-                             $"<a class='btn btn-primary btn-sm' href='/Notification/View/{model.Id}'>View</a> " +
-                             $"<a class='btn btn-primary btn-sm' href='/Notification/Edit/{model.Id}'>Edit</a> " +
+                             $"<a class='btn btn-primary btn-sm' href='/Notification/Details/{model.Id}'>View</a> " +
+                             $"<a class='btn btn-warning btn-sm' href='/Notification/Edit/{model.Id}'>Edit</a> " +
                              $"<a class='btn btn-danger btn-sm' href='/Notification/Delete/{model.Id}'>Delete</a>" +
                              $"</div>"));
         }).Empty("No records found.").Pageable(pager => { pager.RowsPerPage = 10; }).Filterable().Sortable()

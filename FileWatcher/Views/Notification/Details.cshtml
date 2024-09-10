@@ -1,0 +1,47 @@
+﻿@model FileWatcherApp.Models.Notification.NotificationDetailViewModel
+
+<div class="card">
+    <div class="card-header">
+        Notification Details
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label>Title:</label>
+            <p>@Model.Title</p>
+        </div>
+        <div class="form-group">
+            <label>Recipients:</label>
+            <p>@Model.Recipients</p>
+        </div>
+        <div class="form-group">
+            <label>Email Template:</label>
+            <p>@Model.EmailTemplateName</p>
+        </div>
+        <div class="form-group">
+            <label>Notify Source Team:</label>
+            <p>@(Model.NotifySourceTeam ? "Yes" : "No")</p>
+        </div>
+        <div class="form-group">
+            <label>Notify Support Team:</label>
+            <p>@(Model.NotifySupportTeam ? "Yes" : "No")</p>
+        </div>
+        <div class="form-group">
+            <label>Notify L1 L2 Team:</label>
+            <p>@(Model.NotifyL1L2Team ? "Yes" : "No")</p>
+        </div>
+        <div class="form-group">
+            <label>Enabled:</label>
+            <p>@(Model.Enabled ? "Yes" : "No")</p>
+        </div>
+        <div class="form-group">
+            <label>Dynamic Content Mapping:</label>
+            <ul>
+                @foreach (var item in Model.DynamicContentMapping)
+                {
+                    <li>@item.Key: @item.Value</li>
+                }
+            </ul>
+        </div>
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </div>
+</div>

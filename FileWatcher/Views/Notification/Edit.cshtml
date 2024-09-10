@@ -1,4 +1,4 @@
-﻿@model FileWatcherApp.Models.Notification.EditNotificationViewModel
+﻿@model FileWatcherApp.Models.Notification.CreateNotificationViewModel
 
 <div class="card">
     <div class="card-header">
@@ -13,9 +13,9 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
-                <label asp-for="Recipients" class="control-label"></label>
-                <input asp-for="Recipients" class="form-control" />
-                <span asp-validation-for="Recipients" class="text-danger"></span>
+                <label asp-for="AdditionalRecipients" class="control-label"></label>
+                <input asp-for="AdditionalRecipients" class="form-control" />
+                <span asp-validation-for="AdditionalRecipients" class="text-danger"></span>
             </div>
             <div class="input-group mb-3">
                 <div class="form-check form-switch me-3">
@@ -28,13 +28,12 @@
                 </div>
                 <div class="form-check form-switch">
                     <input class="form-check-input" asp-for="NotifyL1L2Team" type="checkbox">
-                    <label class="form-check-label" for="NotifyL1L2Team">Notify L1 L2Team </label>
+                    <label class="form-check-label" for="NotifyL1L2Team">Notify L1 L2Team</label>
                 </div>
             </div>
-
             <div class="input-group mb-3">
                 <div class="form-check form-switch me-3">
-                    <input class="form-check-input" asp-for="Enabled" type="checkbox" checked>
+                    <input class="form-check-input" asp-for="Enabled" type="checkbox">
                     <label class="form-check-label" for="Enabled">Enabled</label>
                 </div>
             </div>
@@ -43,9 +42,25 @@
                 <select asp-for="EmailTemplateId" asp-items="Model.EmailTemplates" class="form-control"></select>
                 <span asp-validation-for="EmailTemplateId" class="text-danger"></span>
             </div>
+            <div id="dynamicContentMapping" class="mb-3">
+                @await Html.PartialAsync("_DynamicContentFieldsPartial", Model)
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#EmailTemplateId').change(function () {
+                var templateId = $(this).val();
+                $.post('@Url.Action("LoadDynamicFields")', { emailTemplateId: templateId }, function (data) {
+                    $('#dynamicContentMapping').html(data);
+                });
+            });
+        });
+    </script>
+}
